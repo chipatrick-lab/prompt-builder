@@ -48,10 +48,10 @@ whenever a prompt underperforms predictions.
 - **Patch:** Add `[DATA GAP]` or `[PLACEHOLDER: ...]` instructions. Require the model to flag missing info rather than fabricate.
 - **Applies when:** Any analysis, report, or document that references real-world data
 - **Severity:** 3
-- **Base rate:** ~0.7 (estimated)
-- **Priority:** 3 x 0.7 = 2.1
+- **Base rate:** 3/3 (fired every time in initial tests)
+- **Priority:** 3 x 1.0 = 3.0
 - **Status:** always-patch
-- **First seen:** starter
+- **First seen:** 2026-06-18
 
 ### Wrong altitude
 - **Failure:** Model defaults to implementation details (sprint points, PRs, tickets) when the audience wants business outcomes (revenue, risk, velocity)
@@ -59,10 +59,10 @@ whenever a prompt underperforms predictions.
 - **Patch:** Add explicit constraint: "Frame every point as a business outcome, not internal process metrics"
 - **Applies when:** Any deliverable targeting VP+ audience
 - **Severity:** 2
-- **Base rate:** ~0.3 (estimated)
-- **Priority:** 2 x 0.3 = 0.6
+- **Base rate:** 1/3
+- **Priority:** 2 x 0.33 = 0.66
 - **Status:** active
-- **First seen:** starter
+- **First seen:** 2026-06-18
 
 ### Discussion-as-commitment
 - **Failure:** Model treats discussed ideas as action items when extracting from transcripts/notes
@@ -70,10 +70,10 @@ whenever a prompt underperforms predictions.
 - **Patch:** Add definition: "An action item is a task explicitly committed to or assigned, not merely discussed or proposed"
 - **Applies when:** Any extraction task (action items, decisions, takeaways from unstructured text)
 - **Severity:** 3
-- **Base rate:** ~0.5 (estimated)
-- **Priority:** 3 x 0.5 = 1.5
-- **Status:** active
-- **First seen:** starter
+- **Base rate:** 1/1
+- **Priority:** 3 x 1.0 = 3.0
+- **Status:** always-patch (pending more observations; only 1 sample)
+- **First seen:** 2026-06-18
 
 ---
 
@@ -87,7 +87,7 @@ Track every prompt-builder run outcome here. One line per run.
 
 ### Entries
 
-(none yet — auto-populated by Step 9)
+2026-06-18 | T2 | 11.5/12 (96%) | run-no-edit | SE enablement program design
 
 ### Stats (recompute after every 5 entries)
 - Total runs: 0
