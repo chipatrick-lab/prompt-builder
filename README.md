@@ -35,6 +35,35 @@ The naive version is vague, has no constraints, no format, no success criteria, 
 
 ---
 
+## Who This Is For
+
+**Power users who want better AI outputs without becoming ML researchers.**
+
+This skill is built for people who:
+- Use Claude (or other LLMs) daily for real work, not experiments
+- Are tired of getting generic, vague responses to their requests
+- Want to learn prompt engineering through practice, not theory
+- Don't have time to study 50 research papers on prompting techniques
+
+You'll get the most value if you are:
+
+| Role | How you benefit |
+|------|-----------------|
+| **Executives / leaders** | Get board-ready deliverables on first run instead of iterating 3-4 times |
+| **Product managers** | Write specs, PRDs, and strategy docs that come back sharp and complete |
+| **Consultants / analysts** | Produce frameworks, evaluations, and recommendations that are immediately client-facing |
+| **Engineers using AI for docs/planning** | Turn "help me write a design doc" into structured, reviewable output |
+| **Anyone learning prompt engineering** | The built-in language upgrade system teaches you one concept per run until you don't need the tool |
+
+**Not for you if:**
+- You already write prompts that consistently score 10+/12 on the rubric below
+- You only use AI for quick factual lookups
+- You prefer typing freely without any structure (the gate will annoy you)
+
+**Design philosophy:** This is a learning tool with a planned expiration date. It shows you every step so you internalize the patterns. After ~4 weeks of daily use, most users can write high-scoring prompts naturally and switch to "quiet mode" (invoke only when needed).
+
+---
+
 ## Key Features
 
 - **Panel bootstrap with sensitivity mitigation.** Generates 3 candidate expert panels (domain-heavy, cross-pollinate, adversarial) and selects by dominance. This mitigates a measured 34-point quality swing from bad panel selection down to ~3 points of variance.
