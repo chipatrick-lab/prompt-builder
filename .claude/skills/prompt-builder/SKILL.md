@@ -148,9 +148,38 @@ Show the bootstrap in the execution brief:
    names, durations, named processes). If density is low, inject: "What are the 5 most
    specific things missing that someone would need on day 1?"
 
-**Hybrid escalation:** default to simulated personas. Escalate to **real parallel
-sub-agents** (the `Agent` tool — general-purpose / Plan) when the request is Tier 3, the
-user flags it high-stakes, or it spans ≥2 distant disciplines.
+**Hybrid agent architecture:**
+
+| Tier | Makers | Checker | Pre-mortem | Scorer |
+|------|--------|---------|-----------|--------|
+| 1 | Simulated (skip panel) | Simulated (light) | Skip | **Independent agent** |
+| 2 | Simulated (role-play in one context) | Simulated | Simulated | **Independent agent** |
+| 3 | **Real parallel agents** (one per expert) | **Real agent** | **Real agent** | **Independent agent** |
+
+**Independent Scorer Agent (all tiers).** Always spawn a separate agent to score the
+refined prompt using the 12-question rubric. This agent receives ONLY the refined prompt
+and the rubric; it has zero knowledge of the debate, the panel, or the iteration history.
+This fixes self-scoring bias (same model grading its own work).
+
+Spawn with:
+```
+Agent(prompt: "Score this prompt using the 12 binary questions below. You have no
+context about how it was built. Score strictly based on what you see.
+[rubric] [prompt to score]", label: "independent-scorer")
+```
+
+**Tier 3 full agent escalation.** When Tier 3, spawn these agents in parallel:
+- **Expert A** (primary): "You are a [role]. Frame a prompt for [task] from your lens. State what you'd insist it includes and what it must avoid. One paragraph max."
+- **Expert B** (degree-1): Same format, different discipline.
+- **Expert C** (degree-2): Same format, adversarial/distant lens.
+- **Checker**: "Review this candidate prompt. Flag anything ungrounded, unscoped, or unmeasurable. List fixes."
+- **Pre-mortem**: "Assume this prompt was executed and failed. What are the top 2 most likely reasons? Suggest patches."
+
+Launch independent agents in parallel (one message, multiple Agent calls). Merge their
+outputs into the candidate prompt. The synthesis happens in the main context.
+
+**Tier 2 simulated.** Role-play all experts within one context (cheaper, faster, good
+enough for moderate complexity). Only the scorer is a separate agent.
 
 ### 5. Show the execution brief — and confirm
 
@@ -338,9 +367,13 @@ OPERATIONALITY (0-3):
   O3. Is there a worked example or format template? [y/n]
 ```
 
-After scoring, run a quick **devil's advocate pass**: for each "yes," ask "could I
-argue no?" If the counter-argument is compelling, downgrade. This simulates a second
-rater and catches over-generous self-scoring.
+**Scoring is done by the independent scorer agent (spawned separately).**
+The scorer sees only the refined prompt and the rubric. It has no context about the
+debate, panel, or iteration. This eliminates self-scoring bias.
+
+Additionally, the main context runs its own score. If the two scores diverge by more
+than 2 points (on the 0-12 scale), flag the discrepancy and take the LOWER score.
+Divergence signals the main context is over-generous about its own work.
 
 **Stopping rule:** Stop when delta < 5 points (on the 0-100 scale) between rounds, or
 the tier's round cap is reached. **Ceiling override (Tier 3 only):** if score is
@@ -371,6 +404,11 @@ Then present:
 - Variance: <high/low> + what was tightened
 - Chain: single / chained (N steps) + why
 - Edge cases folded into pre-mortem: <yes/no>
+
+## Agent architecture used
+- Engine: simulated / hybrid (scorer agent) / full agents (Tier 3)
+- Agents spawned: <list or "scorer only">
+- Score divergence: main=X/12, independent=Y/12 → used: <lower/agreed>
 
 ## Loop embedded
 - Pattern: <multi-draft convergence / verify backward / draft-compare / devil's advocate / escalation / none>
